@@ -8,6 +8,8 @@
   --color-background: #ffff;
   --color-background-secondary: #f0f0f0;
   --color-border: #c4c4c4;
+  --bubble-color: #1e293b;
+  --chat-background: #101c20;
 }
 
 * {

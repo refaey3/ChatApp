@@ -1,7 +1,7 @@
 import "./App.css";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Chat from "./pages/Chat";
+import ChatPage from "./pages/ChatPage";
 import {
   Navigate,
   createBrowserRouter,
@@ -23,11 +23,15 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: user ? <Chat /> : <Register />,
+      element: user ? <ChatPage /> : <Register />,
     },
     {
       path: "/Login",
       element: user ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "/Register",
+      element: user ? <Navigate to="/" /> : <Register />,
     },
   ]);
   if (loading) {
