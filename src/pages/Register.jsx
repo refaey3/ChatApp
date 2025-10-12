@@ -15,11 +15,13 @@ import {
 import Loader from "../common/Loader";
 import { useNavigate } from "react-router-dom";
 import app from "../lib/FireBase";
+import { db } from "../lib/FireBase";
 import {
   getAuth,
   sendEmailVerification,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { setDoc, serverTimestamp, doc } from "firebase/firestore";
 export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -34,7 +36,15 @@ export default function Register() {
         password
       );
       await sendEmailVerification(user.user);
-
+      await setDoc(doc(db, "users", user.user.uid), {
+        uid: user.user.uid,
+        photoURL: "/public/profile-image.jpg",
+        username: userName,
+        online: true,
+        chats: [],
+        createdAt: serverTimestamp(),
+        lastSeen: serverTimestamp(),
+      });
       navigate("/");
     } catch (e) {
       switch (e.code) {

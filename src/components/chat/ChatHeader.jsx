@@ -48,15 +48,24 @@ const Status = styled.p`
   color: ${(props) => (props.$oneline ? "var(--color-primary)" : "#333")};
 `;
 const Connection = styled.div``;
-export default function ChatHeader() {
-  const isOnline = true;
+export default function ChatHeader({ selectedChat }) {
+  const isOnline = selectedChat ? true : false;
   return (
     <Container>
       <Left>
-        <Photo src="/profile-image.jpg" />
+        <Photo
+          src={selectedChat?.photoURL || "/profile-image.jpg"}
+          alt={selectedChat?.username || "Profile"}
+        />
         <Info>
-          <Name>Anoos</Name>
-          <Status $oneline={isOnline}>{isOnline ? "Online" : "Offline"}</Status>
+          <Name>{selectedChat?.username || "Select a chat"}</Name>
+          <Status $online={isOnline}>
+            {selectedChat
+              ? isOnline
+                ? "Online"
+                : "Offline"
+              : "لا يوجد محادثة مختارة"}
+          </Status>
         </Info>
       </Left>
       <Right>
