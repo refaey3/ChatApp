@@ -11,11 +11,11 @@ const Container = styled.div`
   gap: 10px;
 `;
 
-export default function Messages({ messages }) {
+export default function Messages({ messages, currentUser }) {
   return (
     <Container>
       {messages.map((msg) => (
-        <Message key={msg.id} msg={msg} />
+        <Message key={msg.id} msg={msg} currentUser={currentUser} />
       ))}
     </Container>
   );

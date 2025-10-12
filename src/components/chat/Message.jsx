@@ -14,8 +14,8 @@ const Buuble = styled.div`
   font-size: 14px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
-export default function Message({ msg }) {
-  const isMine = msg.sender === "me";
+export default function Message({ msg, currentUser }) {
+  const isMine = msg.senderId === currentUser.uid;
   return (
     <Container $isMine={isMine}>
       <Buuble $isMine={isMine}>{msg.text}</Buuble>

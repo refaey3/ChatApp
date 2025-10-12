@@ -11,13 +11,13 @@ const ListContainer = styled.div`
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
 `;
-export default function List() {
+export default function List({ onSelectChat }) {
   const [searchName, setSearchName] = useState("");
   return (
     <ListContainer>
       <Userinfo />
       <Search onSearch={setSearchName} />
-      <ChatItem searchName={searchName} />
+      <ChatItem searchName={searchName} onSelectChat={onSelectChat} />
     </ListContainer>
   );
 }

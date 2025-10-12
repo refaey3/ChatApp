@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { onSnapshot, collection } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { db } from "../../../../lib/FireBase";
 const Header = styled.h2`
   color: var(--color-primary);
   font-size: 20px;
@@ -50,55 +53,45 @@ const LastMsg = styled.p`
   text-overflow: ellipsis;
 `;
 
-export default function ChatItem({ searchName }) {
-  const chats = [
-    {
-      id: 1,
-      name: "7mada",
-      lastMsg: "علي فرحه الحرمين",
-      src: "/profile-image.jpg",
-    },
-    {
-      id: 2,
-      name: "Anoos",
-      lastMsg: "حبيبي يشيخ",
-      src: "/profile-image.jpg",
-    },
-    {
-      id: 3,
-      name: "Manoo",
-      lastMsg: "الوووووووووووو",
-      src: "/profile-image.jpg",
-    },
-    {
-      id: 4,
-      name: "moSalah",
-      lastMsg: "مش فاضي النهارده",
-      src: "/profile-image.jpg",
-    },
-    {
-      id: 5,
-      name: "OsamaElzer",
-      lastMsg: "رافض العرض يهندسه",
-      src: "/profile-image.jpg",
-    },
-  ];
+export default function ChatItem({ searchName, onSelectChat }) {
+  const [chats, setChats] = useState([]);
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const userChatsRef = collection(db, "userChats", currentUser.uid, "chats");
+
+    const unsubscribe = onSnapshot(userChatsRef, (snapshot) => {
+      const chatsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setChats(chatsData);
+    });
+
+    return () => unsubscribe();
+  }, [currentUser]);
+
   const filteredChats =
     searchName.trim() === ""
       ? chats
       : chats.filter((chat) =>
-          chat.name.toLowerCase().startsWith(searchName.toLowerCase())
+          chat.username.toLowerCase().startsWith(searchName.toLowerCase())
         );
   return (
     <div>
       <Header>Chats</Header>
       {filteredChats.length > 0 ? (
         filteredChats.map((chat) => (
-          <Container key={chat.id}>
-            <ProfilePhoto src={chat.src} alt={chat.name} />
+          <Container key={chat.id} onClick={() => onSelectChat(chat)}>
+            <ProfilePhoto
+              src={chat.photoUrl || "/profile-image.jpg"}
+              alt={chat.name}
+            />
             <Info>
-              <Name>{chat.name}</Name>
-              <LastMsg>{chat.lastMsg}</LastMsg>
+              <Name>{chat.username}</Name>
+              <LastMsg>{chat.lastMsg || "start new conversation"}</LastMsg>
             </Info>
           </Container>
         ))

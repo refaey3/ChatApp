@@ -10,6 +10,8 @@ import {
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import app from "./lib/FireBase";
+
+
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
