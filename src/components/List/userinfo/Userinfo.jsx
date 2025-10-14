@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaPen } from "react-icons/fa";
-
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
@@ -39,11 +39,32 @@ const Edit = styled.div`
 `;
 
 export default function Userinfo() {
+  const [me, setMe] = useState(null);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setMe(user);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+  if (!me) {
+    return (
+      <UserInfo>
+        <Info>
+          <MyPhoto src="/profile-image.jpg" alt="Profile" />
+          <h2>Loading...</h2>
+        </Info>
+      </UserInfo>
+    );
+  }
+
   return (
     <UserInfo>
       <Info>
-        <MyPhoto src="/Porfile.jpg" alt="Profile" />
-        <h2>Mostafa Elrefaey</h2>
+        <MyPhoto src="/profile-image.jpg" alt="Profile" />
+        <h2>{me.displayName}</h2>
       </Info>
       <Edit>
         <FaPen />

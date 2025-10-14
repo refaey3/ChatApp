@@ -15,7 +15,7 @@ export default function List({ onSelectChat }) {
   const [searchName, setSearchName] = useState("");
   return (
     <ListContainer>
-      <Userinfo />
+      <Userinfo onSelectChat={onSelectChat} />
       <Search onSearch={setSearchName} />
       <ChatItem searchName={searchName} onSelectChat={onSelectChat} />
     </ListContainer>

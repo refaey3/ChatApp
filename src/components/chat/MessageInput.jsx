@@ -64,7 +64,6 @@ export default function MessageInput({ onSend }) {
   const [message, setMessage] = useState("");
   const handleSend = () => {
     if (!message.trim()) return;
-    console.log("Message sent:", message);
     onSend(message);
     setMessage("");
   };
@@ -77,12 +76,12 @@ export default function MessageInput({ onSend }) {
       </LeftIcons>
 
       <Input
-        type="text"
         placeholder="Type a message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onFocus={false}
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        autoComplete="off"
       />
 
       <SendButton onClick={handleSend}>Send</SendButton>

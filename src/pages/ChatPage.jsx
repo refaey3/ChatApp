@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import List from "../components/List/List";
 import Chat from "../components/chat/Chat";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+
 const ChatContainer = styled.div`
   display: grid;
   grid-template-columns: 20% 80%;
@@ -39,6 +40,7 @@ export default function ChatPage() {
       console.error("Error logging out:", error);
     }
   };
+
   const [selectedChat, setSelectedChat] = useState(null);
   return (
     <ChatContainer>

@@ -22,6 +22,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { setDoc, serverTimestamp, doc } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
 export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,9 +37,15 @@ export default function Register() {
         password
       );
       await sendEmailVerification(user.user);
+      await updateProfile(user.user, {
+        displayName: userName,
+        photoURL: "/profile-image.jpg",
+      });
+      await user.user.reload();
+      await getAuth().updateCurrentUser(user.user);
       await setDoc(doc(db, "users", user.user.uid), {
         uid: user.user.uid,
-        photoURL: "/public/profile-image.jpg",
+        photoURL: "/profile-image.jpg",
         username: userName,
         online: true,
         chats: [],
@@ -80,18 +87,21 @@ export default function Register() {
               placeholder="UserName"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
+              autoComplete="off"
             />
             <Input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="off"
             />
             <Input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="off"
             />
             <Button type="submit">Create your account</Button>
           </Form>

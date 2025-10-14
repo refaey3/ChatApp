@@ -232,7 +232,7 @@ export default function Search({ onSearch }) {
               <div className="result">
                 <div>
                   <img
-                    src={foundUser.photoURL || "/public/profile-image.jpg"}
+                    src={foundUser.photoURL || "/profile-image.jpg"}
                     alt={foundUser.username}
                   />{" "}
                   <h4>{foundUser.username}</h4>

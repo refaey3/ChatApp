@@ -45,11 +45,11 @@ const Name = styled.h3`
   color: white;
 `;
 const Status = styled.p`
-  color: ${(props) => (props.$oneline ? "var(--color-primary)" : "#333")};
+  color: ${(props) => (props.$online ? "var(--color-primary)" : "#333")};
 `;
 const Connection = styled.div``;
 export default function ChatHeader({ selectedChat }) {
-  const isOnline = selectedChat ? true : false;
+  const isOnline = selectedChat?.online ? true : false;
   return (
     <Container>
       <Left>

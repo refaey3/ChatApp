@@ -110,7 +110,6 @@ export default function Chat({ selectedChat }) {
     <Container>
       {selectedChat ? (
         <>
-          {" "}
           <ChatHeader selectedChat={selectedChat} />
           <Messages messages={messages} currentUser={currentUser} />
           <MessageInput onSend={handleSendMessage} />
@@ -118,7 +117,7 @@ export default function Chat({ selectedChat }) {
       ) : (
         <NoChat>
           <h3>Welcome to the world of chat!</h3>
-          <img src="/public/Chat.png" alt="" />
+          <img src="/Chat.png" alt="" />
         </NoChat>
       )}
     </Container>
