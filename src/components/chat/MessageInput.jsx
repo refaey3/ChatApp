@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FaRegSmile } from "react-icons/fa";
 import { AiOutlinePicture } from "react-icons/ai";
-
+import EmojiPicker from "emoji-picker-react";
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -10,6 +10,7 @@ const Container = styled.div`
   padding: 12px 20px;
   background-color: var(--background-color);
   border-top: 1px solid var(--border-color);
+  position: relative;
 `;
 
 const LeftIcons = styled.div`
@@ -59,21 +60,34 @@ const SendButton = styled.button`
     opacity: 0.85;
   }
 `;
-
+const EmojiPickerWrapper = styled.div`
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  z-index: 10;
+`;
 export default function MessageInput({ onSend }) {
   const [message, setMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const handleSend = () => {
     if (!message.trim()) return;
     onSend(message);
     setMessage("");
   };
-
+  const onEmojiClick = (emojiData) => {
+    setMessage((prev) => prev + emojiData.emoji); 
+  };
   return (
     <Container>
       <LeftIcons>
-        <FaRegSmile />
+        <FaRegSmile onClick={() => setShowEmojiPicker(!showEmojiPicker)} />
         <AiOutlinePicture />
       </LeftIcons>
+      {showEmojiPicker && (
+        <EmojiPickerWrapper>
+          <EmojiPicker onEmojiClick={onEmojiClick} />
+        </EmojiPickerWrapper>
+      )}
 
       <Input
         placeholder="Type a message"

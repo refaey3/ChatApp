@@ -11,7 +11,8 @@ const ChatContainer = styled.div`
   height: 100vh;
   background-color: #f8f9fa;
   @media (max-width: 1000px) {
-    grid-template-columns: 0 100%;
+    grid-template-columns: ${({ showList }) =>
+      showList ? "100% 0" : "100% 100%"};
   }
 `;
 const Button = styled.button`
@@ -30,6 +31,9 @@ const Button = styled.button`
 `;
 export default function ChatPage() {
   const navigate = useNavigate();
+  const [showList, setShowList] = useState(true);
+  const [selectedChat, setSelectedChat] = useState(null);
+
   const handleLogout = async () => {
     const auth = getAuth();
     try {
@@ -40,12 +44,14 @@ export default function ChatPage() {
       console.error("Error logging out:", error);
     }
   };
-
-  const [selectedChat, setSelectedChat] = useState(null);
+  const handleSelectChat = (chat) => {
+    setSelectedChat(chat);
+    if (window.innerWidth <= 1000) setShowList(false);
+  };
   return (
-    <ChatContainer>
-      <List onSelectChat={setSelectedChat} />
-      <Chat selectedChat={selectedChat} />{" "}
+    <ChatContainer showList={showList}>
+      <List onSelectChat={handleSelectChat} show={showList} />
+      <Chat selectedChat={selectedChat} onBack={() => setShowList(true)} />
       <Button onClick={handleLogout}>Logout</Button>
     </ChatContainer>
   );

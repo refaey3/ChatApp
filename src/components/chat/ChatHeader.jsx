@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { BiPhone, BiVideo, BiDotsVerticalRounded } from "react-icons/bi";
+import {
+  BiPhone,
+  BiVideo,
+  BiDotsVerticalRounded,
+  BiArrowBack,
+} from "react-icons/bi";
+
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -47,12 +53,31 @@ const Name = styled.h3`
 const Status = styled.p`
   color: ${(props) => (props.$online ? "var(--color-primary)" : "#333")};
 `;
+const BackButton = styled.button`
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 5px;
+
+  @media (max-width: 1000px) {
+    display: block;
+  }
+`;
 const Connection = styled.div``;
-export default function ChatHeader({ selectedChat }) {
+export default function ChatHeader({ selectedChat, onBack }) {
   const isOnline = selectedChat?.online ? true : false;
   return (
     <Container>
       <Left>
+        {" "}
+        {onBack && (
+          <BackButton onClick={onBack}>
+            <BiArrowBack />
+          </BackButton>
+        )}
         <Photo
           src={selectedChat?.photoURL || "/profile-image.jpg"}
           alt={selectedChat?.username || "Profile"}

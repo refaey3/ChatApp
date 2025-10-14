@@ -10,11 +10,22 @@ const ListContainer = styled.div`
   gap: 20px;
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
+  @media (max-width: 1000px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100vh;
+    transform: ${({ show }) => (show ? "translateX(0)" : "translateX(-100%)")};
+    transition: transform 0.3s ease;
+    border-right: none;
+  }
 `;
-export default function List({ onSelectChat }) {
+export default function List({ onSelectChat, show = true }) {
   const [searchName, setSearchName] = useState("");
   return (
-    <ListContainer>
+    <ListContainer show={show}>
       <Userinfo onSelectChat={onSelectChat} />
       <Search onSearch={setSearchName} />
       <ChatItem searchName={searchName} onSelectChat={onSelectChat} />

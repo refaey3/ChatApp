@@ -49,7 +49,7 @@ const NoChat = styled.div`
     object-fit: contain;
   }
 `;
-export default function Chat({ selectedChat }) {
+export default function Chat({ selectedChat, onBack, show = true }) {
   const [messages, setMessages] = useState([]);
   const auth = getAuth();
 
@@ -110,7 +110,7 @@ export default function Chat({ selectedChat }) {
     <Container>
       {selectedChat ? (
         <>
-          <ChatHeader selectedChat={selectedChat} />
+          <ChatHeader selectedChat={selectedChat} onBack={onBack} />
           <Messages messages={messages} currentUser={currentUser} />
           <MessageInput onSend={handleSendMessage} />
         </>
