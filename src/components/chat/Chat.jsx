@@ -49,7 +49,7 @@ const NoChat = styled.div`
     object-fit: contain;
   }
 `;
-export default function Chat({ selectedChat, onBack, show = true }) {
+export default function Chat({ selectedChat, onBack}) {
   const [messages, setMessages] = useState([]);
   const auth = getAuth();
 

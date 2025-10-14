@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Message from "./Message";
 
@@ -12,8 +12,14 @@ const Container = styled.div`
 `;
 
 export default function Messages({ messages, currentUser }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [messages]);
   return (
-    <Container>
+    <Container ref={containerRef}>
       {messages.map((msg) => (
         <Message key={msg.id} msg={msg} currentUser={currentUser} />
       ))}
