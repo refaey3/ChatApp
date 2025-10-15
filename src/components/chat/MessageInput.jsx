@@ -10,7 +10,9 @@ const Container = styled.div`
   padding: 12px 20px;
   background-color: var(--background-color);
   border-top: 1px solid var(--border-color);
-  position: relative;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 `;
 
 const LeftIcons = styled.div`
@@ -75,7 +77,7 @@ export default function MessageInput({ onSend }) {
     setMessage("");
   };
   const onEmojiClick = (emojiData) => {
-    setMessage((prev) => prev + emojiData.emoji); 
+    setMessage((prev) => prev + emojiData.emoji);
   };
   return (
     <Container>

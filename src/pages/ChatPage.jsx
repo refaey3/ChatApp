@@ -8,12 +8,13 @@ import { getAuth, signOut } from "firebase/auth";
 const ChatContainer = styled.div`
   display: grid;
   grid-template-columns: 20% 80%;
-  height: 100vh;
   background-color: #f8f9fa;
   @media (max-width: 1000px) {
     grid-template-columns: ${({ showList }) =>
       showList ? "100% 0" : "100% 100%"};
   }
+  height: 100vh;
+  overflow: hidden;
 `;
 const Button = styled.button`
   width: 30px;

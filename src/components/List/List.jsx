@@ -10,7 +10,9 @@ const ListContainer = styled.div`
   gap: 20px;
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
-  @media (max-width: 1000px) {
+  height: 100vh; 
+  overflow-y: auto;
+ @media (max-width: 1000px) {
     position: fixed;
     top: 0;
     left: 0;

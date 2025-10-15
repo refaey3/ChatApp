@@ -23,7 +23,9 @@ const Container = styled.div`
   flex-direction: column;
   background-color: var(--chat-background);
   height: 100vh;
+  overflow: hidden;
 `;
+
 const NoChat = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,7 +51,7 @@ const NoChat = styled.div`
     object-fit: contain;
   }
 `;
-export default function Chat({ selectedChat, onBack}) {
+export default function Chat({ selectedChat, onBack }) {
   const [messages, setMessages] = useState([]);
   const auth = getAuth();
 

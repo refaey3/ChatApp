@@ -5,6 +5,8 @@ import Message from "./Message";
 const Container = styled.div`
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -15,7 +17,7 @@ export default function Messages({ messages, currentUser }) {
   const containerRef = useRef(null);
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+      containerRef.current.scrollTop = containerRef.current.scrollHeight - 100;
     }
   }, [messages]);
   return (
