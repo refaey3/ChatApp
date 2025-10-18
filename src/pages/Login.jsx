@@ -166,15 +166,22 @@ export const Footer = styled.div`
     margin-left: 5px;
   }
 `;
+const ErrorText = styled.p`
+  color: #ff4d4f;
+  font-size: 16px;
+  margin: 4px 0 8px;
+`;
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
+
   const submit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert("يرجى ادخال جميع البيانات");
+      alert("Please enter all the data .");
       return;
     }
     setIsLoading(true);
@@ -184,19 +191,19 @@ export default function Login() {
     } catch (e) {
       switch (e.code) {
         case "auth/user-disabled":
-          alert("تم حظر هذا الحساب");
+          setErrorMessage("This account has been banned. ");
           break;
         case "auth/wrong-password":
-          alert("كلمة السر غير صحيح");
+          setErrorMessage("The password is incorrect");
           break;
         case "auth/invalid-credential":
-          alert("كلمة السر او البريد غير صحيحة");
+          setErrorMessage("The password or email is incorrect. ");
           break;
         case "auth/user-not-found":
-          alert("هذا المستخدم غير موجود");
+          setErrorMessage("This user does not exist. ");
           break;
         default:
-          alert("حدث خطأ ما.");
+          setErrorMessage("Something went wrong. ");
       }
     } finally {
       setIsLoading(false);
@@ -215,6 +222,7 @@ export default function Login() {
             <p>Login to continue to your account.</p>
           </Title>
           <Form onSubmit={submit}>
+            {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
             <Input
               type="email"
               placeholder="Email"

@@ -12,6 +12,7 @@ import {
   Footer,
   Right,
 } from "./Login";
+import styled from "styled-components";
 import Loader from "../common/Loader";
 import { useNavigate } from "react-router-dom";
 import app from "../lib/FireBase";
@@ -27,6 +28,7 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const singup = async (e) => {
     e.preventDefault();
@@ -56,19 +58,24 @@ export default function Register() {
     } catch (e) {
       switch (e.code) {
         case "auth/email-already-in-use":
-          alert("يوجد حساب بهذا البريد بالفعل.");
+          setErrorMessage("An account with this email already exists.");
           break;
         case "auth/weak-password":
-          alert("كلمة السر ضعيفة");
+          setErrorMessage("The password is weak. ");
           break;
         case "auth/invalid-credential":
-          alert("كلمة السر او البريد غير صحيحة");
+          setErrorMessage("The password or email is incorrect.");
           break;
         default:
-          alert("حدث خطأ ما.");
+          setErrorMessage("Something went wrong.");
       }
     }
   };
+  const ErrorText = styled.p`
+    color: #ff4d4f;
+    font-size: 16px;
+    margin: 4px 0 8px;
+  `;
   return (
     <Body>
       <Left>
@@ -82,6 +89,7 @@ export default function Register() {
             <p>Register to get started with your new account.</p>
           </Title>
           <Form onSubmit={singup}>
+            {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
             <Input
               type="text"
               placeholder="UserName"

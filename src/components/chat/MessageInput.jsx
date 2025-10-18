@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { FaRegSmile } from "react-icons/fa";
 import { AiOutlinePicture } from "react-icons/ai";
 import EmojiPicker from "emoji-picker-react";
+import { IoSend } from "react-icons/io5";
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -52,14 +53,24 @@ const SendButton = styled.button`
   color: white;
   border: none;
   outline: none;
-  padding: 9px 20px;
+  padding: 6px 16px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   transition: 0.2s ease;
+  svg {
+    font-size: 17px;
+    transition: 0.3s ease;
+    text-align: center;
+    margin-top: 2px;
+  }
 
   &:hover {
-    opacity: 0.85;
+    background-color: white;
+    svg {
+      color: var(--color-primary);
+      transform: scale(1.1);
+    }
   }
 `;
 const EmojiPickerWrapper = styled.div`
@@ -71,6 +82,7 @@ const EmojiPickerWrapper = styled.div`
 export default function MessageInput({ onSend }) {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojiRef = useRef(null);
   const handleSend = () => {
     if (!message.trim()) return;
     onSend(message);
@@ -79,14 +91,22 @@ export default function MessageInput({ onSend }) {
   const onEmojiClick = (emojiData) => {
     setMessage((prev) => prev + emojiData.emoji);
   };
+  useEffect(() => {
+    const hadleClickOutSide = (e) => {
+      if (emojiRef.current && !emojiRef.current.contains(e.target)) {
+        setShowEmojiPicker(false);
+      }
+    };
+    document.addEventListener("mousedown", hadleClickOutSide);
+    return () => document.removeEventListener("mousedown", hadleClickOutSide);
+  }, []);
   return (
     <Container>
       <LeftIcons>
         <FaRegSmile onClick={() => setShowEmojiPicker(!showEmojiPicker)} />
-        <AiOutlinePicture />
       </LeftIcons>
       {showEmojiPicker && (
-        <EmojiPickerWrapper>
+        <EmojiPickerWrapper ref={emojiRef}>
           <EmojiPicker onEmojiClick={onEmojiClick} />
         </EmojiPickerWrapper>
       )}
@@ -100,7 +120,10 @@ export default function MessageInput({ onSend }) {
         autoComplete="off"
       />
 
-      <SendButton onClick={handleSend}>Send</SendButton>
+      <SendButton onClick={handleSend}>
+        {" "}
+        <IoSend />
+      </SendButton>
     </Container>
   );
 }

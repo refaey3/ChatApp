@@ -72,7 +72,6 @@ export default function ChatHeader({ selectedChat, onBack }) {
   return (
     <Container>
       <Left>
-        {" "}
         {onBack && (
           <BackButton onClick={onBack}>
             <BiArrowBack />
@@ -96,7 +95,6 @@ export default function ChatHeader({ selectedChat, onBack }) {
       <Right>
         <BiPhone />
         <BiVideo />
-        <BiDotsVerticalRounded />
       </Right>
     </Container>
   );
