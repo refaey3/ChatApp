@@ -10,7 +10,7 @@ import {
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import app from "./lib/FireBase";
-
+import MainLoader from "./common/MainLoader";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,9 @@ function App() {
     },
   ]);
   if (loading) {
-    return <p>loading</p>;
+    return (
+        <MainLoader />
+    );
   }
   return <RouterProvider router={router} />;
 }

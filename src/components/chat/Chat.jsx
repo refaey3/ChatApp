@@ -23,9 +23,9 @@ const Container = styled.div`
   flex-direction: column;
   background-color: var(--chat-background);
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 `;
+
 const NoChat = styled.div`
   display: flex;
   flex-direction: column;

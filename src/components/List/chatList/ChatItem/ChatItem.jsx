@@ -1,8 +1,42 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { onSnapshot, collection } from "firebase/firestore";
+import { onSnapshot, collection, doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../../../lib/FireBase";
+
+function useUserInfo() {
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const userRef = doc(db, "users", currentUser.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setUserInfo(userSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  return { userInfo, loading };
+}
+
 const Header = styled.h2`
   color: var(--color-primary);
   font-size: 20px;
@@ -10,6 +44,7 @@ const Header = styled.h2`
   margin-top: -10px;
   margin-bottom: 10px;
   padding-left: 5px;
+  margin-left: 5px;
 `;
 
 const Container = styled.div`
@@ -57,6 +92,8 @@ export default function ChatItem({ searchName, onSelectChat }) {
   const [chats, setChats] = useState([]);
   const auth = getAuth();
   const currentUser = auth.currentUser;
+  const { userInfo } = useUserInfo();
+
   useEffect(() => {
     if (!currentUser) return;
 
@@ -79,6 +116,7 @@ export default function ChatItem({ searchName, onSelectChat }) {
       : chats.filter((chat) =>
           chat.username.toLowerCase().startsWith(searchName.toLowerCase())
         );
+
   return (
     <div>
       <Header>Chats</Header>
@@ -90,8 +128,8 @@ export default function ChatItem({ searchName, onSelectChat }) {
               alt={chat.name}
             />
             <Info>
-              <Name>{chat.username}</Name>
-              <LastMsg>{chat.lastMsg || "start new conversation"}</LastMsg>
+              <Name>{chat.username || userInfo?.username || "User"}</Name>
+              <LastMsg>{chat.lastMsg || "Start new conversation"}</LastMsg>
             </Info>
           </Container>
         ))

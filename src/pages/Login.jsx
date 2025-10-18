@@ -230,7 +230,7 @@ export default function Login() {
               required
             />
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "loding..." : "Login"}
+              {isLoading ? "loading..." : "Login"}
             </Button>
           </Form>
 

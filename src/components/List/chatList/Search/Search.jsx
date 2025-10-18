@@ -58,10 +58,13 @@ const Plus = styled.div`
   margin-left: 10px;
   background-color: var(--color-secondry);
   border-radius: 8px;
-  padding: 7px;
+  padding: 6px;
+  text-align: center;
   cursor: pointer;
   transition: 0.3s;
-
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   svg {
     margin-top: 1px;
     color: #fff;
@@ -248,7 +251,7 @@ export default function Search({ onSearch }) {
           </PopUpContent>
         </PopUpOverLay>
       )}{" "}
-      <ToastContainer position="top-center" theme="dark" autoClose={500}/>
+      <ToastContainer position="top-center" theme="dark" autoClose={500} />
     </SearchAddContainer>
   );
 }
