@@ -111,7 +111,7 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="off"
             />
-            <Button type="submit">Create your account</Button>
+            <Button type="submit" >Create your account</Button>
           </Form>
 
           <Footer>
