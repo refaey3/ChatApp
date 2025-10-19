@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaPen } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5";
 import {
   getAuth,
   onAuthStateChanged,
@@ -9,9 +10,8 @@ import {
 } from "firebase/auth";
 import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../../../lib/FireBase";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const UserInfo = styled.div`
@@ -29,7 +29,6 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 5px;
   h2 {
     color: #fff;
     font-size: 13px;
@@ -44,12 +43,19 @@ const MyPhoto = styled.img`
   object-fit: cover;
 `;
 
-const Edit = styled.div`
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const IconButton = styled.div`
   cursor: pointer;
-  color: #bbb;
+  color: ${(props) => props.color || "#bbb"};
   transition: 0.3s;
+
   &:hover {
-    color: #fff;
+    color: ${(props) => props.hover || "#fff"};
   }
 `;
 
@@ -77,6 +83,7 @@ const Modal = styled.div`
     color: #fff;
   }
 `;
+
 const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
@@ -180,9 +187,20 @@ export default function Userinfo() {
 
       <ToastContainer position="top-center" theme="dark" autoClose={500} />
 
-      <Edit onClick={() => setShowModal(true)}>
-        <FaPen />
-      </Edit>
+      <Actions>
+        <IconButton onClick={() => setShowModal(true)}>
+          <FaPen />
+        </IconButton>
+
+        <IconButton
+          onClick={handleLogout}
+          color="#d9534f"
+          hover="#ff6b6b"
+          title="Logout"
+        >
+          <IoLogOutOutline size={18} />
+        </IconButton>
+      </Actions>
 
       {showModal && (
         <Modal>
@@ -196,9 +214,6 @@ export default function Userinfo() {
             <ModalButton onClick={handleUpdateName}>Save</ModalButton>
             <ModalButton bg="#555" onClick={() => setShowModal(false)}>
               Close
-            </ModalButton>
-            <ModalButton bg="#d9534f" onClick={handleLogout}>
-              Logout
             </ModalButton>
           </Buttons>
         </Modal>
